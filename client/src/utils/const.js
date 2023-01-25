@@ -1,0 +1,5 @@
+export const LOGIN_ROUTE = '/login'
+export const REG_ROUTE = '/register'
+export const CONTACTS_ROUTE = '/contacts'
+export const ADMIN_ROUTE = '/adminPanel'
+export const CAB_ROUTE = '/cab'

@@ -1,0 +1,7 @@
+#adm_button{
+    transition: background-color .15s !important;
+}
+
+#adm_button:hover {
+    transition: background-color .15s !important;
+}

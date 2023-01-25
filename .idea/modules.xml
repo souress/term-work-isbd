@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/asylum/asylum.iml" filepath="$PROJECT_DIR$/asylum/asylum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/term-work-isbd.iml" filepath="$PROJECT_DIR$/.idea/term-work-isbd.iml" />
+    </modules>
+  </component>
+</project>
