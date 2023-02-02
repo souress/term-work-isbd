@@ -1,4 +1,4 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

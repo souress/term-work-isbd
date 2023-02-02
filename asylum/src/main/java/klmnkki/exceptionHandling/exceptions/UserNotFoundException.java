@@ -1,4 +1,4 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling.exceptions;
 
 public class UserNotFoundException extends Exception {
     public UserNotFoundException(String login) {

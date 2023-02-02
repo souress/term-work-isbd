@@ -1,4 +1,4 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling.exceptions;
 
 public class WrongPasswordException extends Exception {
     public WrongPasswordException(String username) {

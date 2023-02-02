@@ -1,5 +1,6 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling;
 
+import klmnkki.exceptionHandling.exceptions.ApiException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;

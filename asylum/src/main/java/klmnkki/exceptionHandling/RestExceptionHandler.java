@@ -1,4 +1,4 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

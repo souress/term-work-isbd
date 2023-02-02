@@ -3,7 +3,10 @@ package klmnkki.services;
 import klmnkki.POJO.AuthRequest;
 import klmnkki.entities.UserEntity;
 import klmnkki.entities.enums.UserRole;
-import klmnkki.exceptions.*;
+import klmnkki.exceptionHandling.exceptions.IncorrectCredentialsException;
+import klmnkki.exceptionHandling.exceptions.UserAlreadyExistsException;
+import klmnkki.exceptionHandling.exceptions.UserNotFoundException;
+import klmnkki.exceptionHandling.exceptions.WrongPasswordException;
 import klmnkki.repositories.UserRepository;
 import klmnkki.security.Hasher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +17,12 @@ public class AuthService {
     @Autowired
     private UserRepository userRepository;
 
-    public void register(AuthRequest authRequest) throws UserAlreadyExistsException {
+    public void register(AuthRequest authRequest) throws UserAlreadyExistsException, IncorrectCredentialsException {
         if (userRepository.existsByLogin(authRequest.getLogin())) {
             throw new UserAlreadyExistsException("Login is already in use.");
+        }
+        if (authRequest.getLogin().length() < 5 || authRequest.getLogin().length() > 15) {
+            throw new IncorrectCredentialsException("Login length is invalid.");
         }
         UserEntity user = new UserEntity(authRequest.getLogin(), Hasher.encryptMD5(authRequest.getPassword()), UserRole.PATIENT);
         userRepository.save(user);

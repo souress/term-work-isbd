@@ -5,8 +5,6 @@ import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
 import {checkAdmin, loginFunc} from "../http/userAPI";
-import axios from "../axiosAPI";
-
 
 const AuthPage = observer(() => {
     const {user} = useContext(Context)
@@ -15,19 +13,14 @@ const AuthPage = observer(() => {
     const [password, setPassword] = useState('')
 
     const click = async () => {
-        try {
-            let data = await loginFunc(login, password);
-            const user1 = {login: login, password: password}
-            user.setUser(user1)
-            user.setIsAuth(true)
-            checkAdmin(user.user.login).then((response) => {
-                user.setIsAdmin(response.data)
-                history.push(CAB_ROUTE)
-            })
-        } catch (e) {
-            alert(e)
-        }
-
+        await loginFunc(login, password);
+        const user1 = {login: login, password: password}
+        user.setUser(user1)
+        user.setIsAuth(true)
+        checkAdmin(user.user.login).then((response) => {
+            user.setIsAdmin(response.data)
+            history.push(CAB_ROUTE)
+        })
     }
 
     return (<Container className="d-flex justify-content-center align-items-center"
@@ -44,7 +37,7 @@ const AuthPage = observer(() => {
                               type="password" onChange={e => setPassword(e.target.value)}></Form.Control>
                 <Button className="w-20 align-self-center" variant="secondary" color="gray"
                         onClick={() => {
-                            click()
+                            click().then(x => console.log(x))
                         }}>Вход</Button>
                 <a onClick={() => {
                     history.push(REG_ROUTE)

@@ -1,4 +1,4 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling.exceptions;
 
 public class ForbiddenAccessException extends Exception {
     public ForbiddenAccessException(String login, String type) {

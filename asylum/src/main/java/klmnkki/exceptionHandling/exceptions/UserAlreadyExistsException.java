@@ -1,4 +1,4 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling.exceptions;
 
 public class UserAlreadyExistsException extends Exception {
     public UserAlreadyExistsException(String message) {

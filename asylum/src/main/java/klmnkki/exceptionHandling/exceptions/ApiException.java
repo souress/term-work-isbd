@@ -1,7 +1,7 @@
-package klmnkki.exceptions;
+package klmnkki.exceptionHandling.exceptions;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.json.UTF8JsonGenerator;
+import klmnkki.exceptionHandling.ApiErrorModel;
+import klmnkki.exceptionHandling.ApiErrorType;
 import org.springframework.http.HttpStatus;
 
 public class ApiException extends Exception {
