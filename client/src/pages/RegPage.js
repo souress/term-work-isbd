@@ -5,6 +5,7 @@ import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
 import {registerFunc} from "../http/userAPI";
+import validator from "validator/es";
 
 
 const RegPage = observer(() => {
@@ -25,12 +26,10 @@ const RegPage = observer(() => {
             errorMessage.textContent = "Имя пользователя должно быть длиной от 5 до 15 символов"
         } else if (password_element.value !== passwordRep.value) {
             errorMessage.textContent = "Пароли должны совпадать"
-        } else
-            //     if (!validator.isStrongPassword(document.getElementById("reg_pass").value, {minSymbols: 0})) {
-            //         document.getElementById("reg_err_msg").textContent = "Password must consist of one lowercase, uppercase letter and number, at least 8 characters"
-            // } else
-        if (!checkBox.checked) {
-            document.getElementById("reg_err_msg").textContent = "Необходимо подтвердить согласие с политикой обработки персональных данных"
+        } else if (!validator.isStrongPassword(document.getElementById("reg_pass").value, {minSymbols: 8})) {
+            errorMessage.textContent = "Пароль должен включать как минимум одну lowercase, одну uppercase букву, одно число и быть не менее 8 символов"
+        } else if (!checkBox.checked) {
+            errorMessage.textContent = "Необходимо подтвердить согласие с политикой обработки персональных данных"
         } else {
             await registerFunc(login, password)
             user.setUser({login: login, password: password})
@@ -48,7 +47,7 @@ const RegPage = observer(() => {
                 <Form.Control className="mb-3" id="reg_pass" placeholder="Введите пароль" type="password" onChange={e => setPassword(e.target.value)}></Form.Control>
                 <h5>Повторите пароль</h5>
                 <Form.Control className="mb-3" id="reg_pass_rep" placeholder="Повторите ваш пароль" type="password"></Form.Control>
-                <div style={{color: "red", fontSize: 20}} id="reg_err_msg"></div>
+                <div style={{color: "red", fontSize: 15}} id="reg_err_msg"></div>
                 <Row>
                     <Col md={1}><input id="reg_check" type="checkbox"/></Col>
                     <Col><h6>Я согласен с <a href="https://www.securitycode.ru/personal-data/"

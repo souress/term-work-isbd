@@ -1,41 +1,74 @@
 import React, {useState} from 'react';
 import {Button, Col, Container, Row} from "react-bootstrap";
 import "./css/admPanel.css"
+import EditUser from "../components/modals/EditUser";
 
-const AdminPanel = () => {
+const AdminPanel = (variant) => {
+    const [userVisible, setUserVisible] = useState(false)
+    //
+    // if (variant) {
+    //     setUserVisible(false)
+    // }
+    //
+    // const handleClickUser = (reason) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //     setUserVisible(false)
+    //
+    // };
+
     return (<Container className="d-flex flex-column">
             <Row>
                 <Col style={{paddingLeft: 100}}>
                     <Col>
                         <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
                                 onClick={() => console.log("true")} style={{width: 500}}>
-                            Добавить продукт
+                            Артисты
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
+                                onClick={() => setUserVisible(true)} style={{width: 500}}>
+                            Пользователи
+                        </Button>
+                        <EditUser show={userVisible} onHide={() => setUserVisible(false)}/>
+                    </Col>
+                    <Col>
+                        <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
+                                onClick={() => console.log("true")} style={{width: 500}}>
+                            Комнаты
                         </Button>
                     </Col>
                     <Col>
                         <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
                                 onClick={() => console.log("true")} style={{width: 500}}>
-                            Изменить количество товара
-                        </Button></Col>
+                            Продукты
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
+                                onClick={() => console.log("true")} style={{width: 500}}>
+                            Лейблы
+                        </Button>
+                    </Col>
                 </Col>
-                <Col style={{paddingRight: 50}}>
+                <Col style={{paddingLeft: 50}}>
                     <Col>
                         <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
                                 onClick={() => console.log("true")} style={{width: 500}}>
-                            Изменить статус заказа
+                            Поставщики
                         </Button>
                     </Col>
                     <Col>
                         <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
                                 onClick={() => console.log("true")} style={{width: 500}}>
-                            Добавить рыбу
+                            Лекарства
                         </Button>
                     </Col>
                 </Col>
             </Row>
-
         </Container>
-
     );
 };
 

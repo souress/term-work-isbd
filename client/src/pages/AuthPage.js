@@ -4,7 +4,7 @@ import {CAB_ROUTE, REG_ROUTE} from "../utils/const";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
-import {checkAdmin, loginFunc} from "../http/userAPI";
+import {checkAdmin, checkRole, loginFunc} from "../http/userAPI";
 
 const AuthPage = observer(() => {
     const {user} = useContext(Context)
@@ -17,8 +17,13 @@ const AuthPage = observer(() => {
         const user1 = {login: login, password: password}
         user.setUser(user1)
         user.setIsAuth(true)
+        console.log(user1)
         checkAdmin(user.user.login).then((response) => {
-            user.setIsAdmin(response.data)
+            user.setIsAdmin(response)
+            history.push(CAB_ROUTE)
+        })
+        checkRole(user.user.login).then((response) => {
+            user.setRole(response)
             history.push(CAB_ROUTE)
         })
     }
@@ -35,6 +40,7 @@ const AuthPage = observer(() => {
                 <h5 className="mt-4">Пароль</h5>
                 <Form.Control id="log_pass" className="mb-4" placeholder="Введите пароль"
                               type="password" onChange={e => setPassword(e.target.value)}></Form.Control>
+                <div style={{color: "red", fontSize: 15, alignContent: "center"}} id="auth_err_msg"></div>
                 <Button className="w-20 align-self-center" variant="secondary" color="gray"
                         onClick={() => {
                             click().then(x => console.log(x))

@@ -4,7 +4,7 @@ import {
     ADMIN_ROUTE,
     CONTACTS_ROUTE,
     CAB_ROUTE,
-    LOGIN_ROUTE
+    LOGIN_ROUTE, SCHEDULE_ROUTE
 } from "../utils/const";
 import {NavLink, useHistory} from "react-router-dom";
 import NavbarImg from "../assets/i.webp"
@@ -14,11 +14,6 @@ import {observer} from "mobx-react-lite";
 const NavBar = observer(() => {
     const {user} = useContext(Context)
     const history = useHistory()
-    const {cab} = useContext(Context)
-    const res = []
-    cab.prod.map(product => {
-        res.push(product.id)
-    })
 
     const logout = () => {
         user.setUser({})
@@ -26,7 +21,7 @@ const NavBar = observer(() => {
     }
     return (
         <Navbar bg="light" variant="light">
-        <NavLink style={{color: 'white', marginLeft: 7}} to={LOGIN_ROUTE}><Image width={100} src={NavbarImg}/></NavLink>
+        <NavLink style={{color: 'white', marginLeft: 7}} to={CONTACTS_ROUTE}><Image width={100} src={NavbarImg}/></NavLink>
         {user.isAuth &&
             <Nav className="justify-content-center me-auto" style={{marginLeft: 15}}>
                 <NavItem>
@@ -41,6 +36,13 @@ const NavBar = observer(() => {
                         history.push(CAB_ROUTE)
                     }}>
                         Личный кабинет
+                    </Button>
+                </NavItem>
+                <NavItem>
+                    <Button variant="secondary" style={{marginRight: 10}} onClick={() => {
+                        history.push(SCHEDULE_ROUTE)
+                    }}>
+                        Расписание
                     </Button>
                 </NavItem>
                 {user.isAuth && user.isAdmin &&

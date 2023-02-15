@@ -1,7 +1,9 @@
 package klmnkki.entities;
 
 import klmnkki.entities.enums.PersonRole;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "person", schema = "public")
 public class PersonEntity {
@@ -29,4 +33,11 @@ public class PersonEntity {
 
     @ManyToMany
     private List<ScheduleEntity> schedules;
+
+    public PersonEntity(String fullName, PersonRole role, Integer balance, List<ScheduleEntity> schedules) {
+        this.fullName = fullName;
+        this.role = role;
+        this.balance = balance;
+        this.schedules = schedules;
+    }
 }
