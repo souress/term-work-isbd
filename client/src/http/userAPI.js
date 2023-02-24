@@ -19,6 +19,7 @@ export const loginFunc = async (login, password) => {
             return jwtDecode(response.data.token)
         }).catch((error) => {
             document.getElementById("auth_err_msg").textContent = error.response.data.errorCode
+            throw Error
         })
 }
 
