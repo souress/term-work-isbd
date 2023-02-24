@@ -17,7 +17,6 @@ const AuthPage = observer(() => {
         const user1 = {login: login, password: password}
         user.setUser(user1)
         user.setIsAuth(true)
-        console.log(user1)
         checkAdmin(user.user.login).then((response) => {
             user.setIsAdmin(response)
             history.push(CAB_ROUTE)
