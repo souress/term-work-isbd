@@ -4,7 +4,7 @@ import {
     CAB_ROUTE,
     LOGIN_ROUTE,
     REG_ROUTE,
-    SCHEDULE_ROUTE, DEPARTMENT_ROUTE
+    SCHEDULE_ROUTE, DEPARTMENT_ROUTE, DOCTOR_ROUTE
 } from "./utils/const";
 import AuthPage from "./pages/AuthPage";
 import ContactPage from "./pages/ContactPage";
@@ -13,6 +13,7 @@ import AdminPanel from "./pages/AdminPanel";
 import CabPage from "./pages/CabPage";
 import SchedulePage from "./pages/SchedulePage";
 import DepartmentPage from "./pages/DepartmentPage";
+import DoctorPanel from "./pages/DoctorPanel";
 
 export const moderatorRoutes = [{
     path: LOGIN_ROUTE, Component: AuthPage
@@ -32,6 +33,16 @@ export const publicRoutes = [{
     path: CAB_ROUTE, Component: CabPage
 }, {
     path: SCHEDULE_ROUTE, Component: SchedulePage
+}]
+
+export const doctorRoutes = [{
+    path: LOGIN_ROUTE, Component: AuthPage
+}, {
+    path: REG_ROUTE, Component: RegPage
+}, {
+    path: CONTACTS_ROUTE, Component: ContactPage
+}, {
+    path: DOCTOR_ROUTE, Component: DoctorPanel
 }]
 
 export const adminRoutes = [{

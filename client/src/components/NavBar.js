@@ -1,15 +1,16 @@
 import React, {useContext} from 'react';
-import {Button, Image, Nav, Navbar, NavItem, Row} from "react-bootstrap";
+import {Button, Image, Nav, Navbar, NavItem} from "react-bootstrap";
 import {
     ADMIN_ROUTE,
     CONTACTS_ROUTE,
     CAB_ROUTE,
-    LOGIN_ROUTE, SCHEDULE_ROUTE
+    LOGIN_ROUTE, SCHEDULE_ROUTE, DOCTOR_ROUTE
 } from "../utils/const";
 import {NavLink, useHistory} from "react-router-dom";
 import NavbarImg from "../assets/i.webp"
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+import toBoolean from "validator/es/lib/toBoolean";
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
@@ -18,6 +19,7 @@ const NavBar = observer(() => {
     const logout = () => {
         user.setUser({})
         user.setIsAuth(false)
+        localStorage.clear()
     }
     return (
         <Navbar bg="light" variant="light">
@@ -31,13 +33,15 @@ const NavBar = observer(() => {
                         Контакты
                     </Button>
                 </NavItem>
-                <NavItem>
+                { user.role.valueOf() === "PATIENT" &&
+                    <NavItem>
                     <Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                         history.push(CAB_ROUTE)
                     }}>
                         Личный кабинет
                     </Button>
                 </NavItem>
+                }
                 <NavItem>
                     <Button variant="secondary" style={{marginRight: 10}} onClick={() => {
                         history.push(SCHEDULE_ROUTE)
@@ -45,12 +49,21 @@ const NavBar = observer(() => {
                         Расписание
                     </Button>
                 </NavItem>
-                {user.isAuth && user.isAdmin &&
+                {toBoolean(user.isAdmin) &&
                     <NavItem>
                         <Button variant="secondary" onClick={() => {
                             history.push(ADMIN_ROUTE)
                         }}>
                             Админ панель
+                        </Button>
+                    </NavItem>
+                }
+                {user.role.valueOf() === 'DOCTOR' &&
+                    <NavItem>
+                        <Button variant="secondary" onClick={() => {
+                            history.push(DOCTOR_ROUTE)
+                        }}>
+                            Действия
                         </Button>
                     </NavItem>
                 }

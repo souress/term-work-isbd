@@ -5,7 +5,6 @@ import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
 import {registerFunc} from "../http/userAPI";
-import validator from "validator/es";
 
 
 const RegPage = observer(() => {
@@ -26,8 +25,6 @@ const RegPage = observer(() => {
             errorMessage.textContent = "Имя пользователя должно быть длиной от 5 до 15 символов"
         } else if (password_element.value !== passwordRep.value) {
             errorMessage.textContent = "Пароли должны совпадать"
-        } else if (!validator.isStrongPassword(document.getElementById("reg_pass").value, {minSymbols: 8})) {
-            errorMessage.textContent = "Пароль должен включать как минимум одну lowercase, одну uppercase букву, одно число и быть не менее 8 символов"
         } else if (!checkBox.checked) {
             errorMessage.textContent = "Необходимо подтвердить согласие с политикой обработки персональных данных"
         } else {
