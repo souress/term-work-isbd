@@ -1,7 +1,9 @@
 package klmnkki.entities;
 
 import klmnkki.entities.enums.ProductType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +11,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "product", schema = "public")
 public class ProductEntity {
@@ -28,5 +32,8 @@ public class ProductEntity {
     private ProductType productType;
 
     @ManyToMany
+    @JoinTable(name = "diet",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "treatment_program_id"))
     private List<TreatmentProgramEntity> treatmentPrograms;
 }

@@ -1,13 +1,17 @@
 package klmnkki.entities;
 
 import klmnkki.entities.enums.RoomType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "room", schema = "public")
 public class RoomEntity {

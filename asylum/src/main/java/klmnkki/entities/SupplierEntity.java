@@ -1,13 +1,16 @@
 package klmnkki.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "supplier", schema = "public")
 public class SupplierEntity {
@@ -24,7 +27,4 @@ public class SupplierEntity {
 
     @Column(name = "email")
     private String email;
-
-    @OneToMany(mappedBy = "supplier")
-    private Set<MedicineStorageEntity> medicineStorageEntitySet;
 }

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MedicineStorageRepository extends JpaRepository<MedicineStorageEntity, Integer> {
+    MedicineStorageEntity findByMedicineId(Integer id);
 }

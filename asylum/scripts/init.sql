@@ -23,7 +23,7 @@ CREATE TABLE "med_storage"
 (
     "id"          serial    PRIMARY KEY,
     "medicine_id" int       REFERENCES "medicine" ("id") ON DELETE CASCADE,
-    "supplier_id" int       REFERENCES "supplier" ("id") ON DELETE CASCADE,
+    "supplier_id" int       REFERENCES "supplier" ("id") ON DELETE SET NULL,
     "quantity"    int       NOT NULL CHECK ("quantity" >= 0)
 );
 

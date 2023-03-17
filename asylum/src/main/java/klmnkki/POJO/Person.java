@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,13 @@ public class Person {
     private PersonRole role;
     private Integer balance;
     private List<ScheduleEntity> schedules;
+
+    public Person(String fullName, PersonRole role, Integer balance, List<ScheduleEntity> schedules) {
+        this.fullName = fullName;
+        this.role = role;
+        this.balance = balance;
+        this.schedules = schedules == null ? new ArrayList<>() : schedules;
+    }
 
     public static PersonEntity convertToEntity(Person person) {
         return new PersonEntity(

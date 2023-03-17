@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,6 +23,15 @@ public class Schedule {
     private Timestamp beginDatetime;
     private Integer duration;
     private List<PersonEntity> persons;
+
+    public Schedule(ArtistEntity artist, RoomEntity room, Integer price, Timestamp beginDatetime, Integer duration, List<PersonEntity> persons) {
+        this.artist = artist;
+        this.room = room;
+        this.price = price;
+        this.beginDatetime = beginDatetime;
+        this.duration = duration;
+        this.persons = persons == null ? new ArrayList<>() : persons;
+    }
 
     public static ScheduleEntity convertToEntity(Schedule schedule) {
         return new ScheduleEntity(

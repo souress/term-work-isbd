@@ -1,14 +1,17 @@
 package klmnkki.entities;
 
 import klmnkki.entities.enums.MedicineType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "medicine", schema = "public")
 public class MedicineEntity {
@@ -25,14 +28,8 @@ public class MedicineEntity {
     private MedicineType medicineType;
 
     @Column(name = "action_type")
-    private String action_type;
+    private String actionType;
 
     @Column(name = "country")
     private String country;
-
-    @OneToMany(mappedBy = "medicine")
-    private Set<MedicineStorageEntity> medicineStorageEntitySet;
-
-    @OneToOne(mappedBy = "medicine")
-    private TreatmentProgramEntity treatmentProgram;
 }

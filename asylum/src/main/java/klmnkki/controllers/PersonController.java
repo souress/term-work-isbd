@@ -1,11 +1,10 @@
 package klmnkki.controllers;
 
 import com.google.gson.Gson;
-
 import klmnkki.POJO.Person;
 import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.ApiException;
-import klmnkki.exceptionHandling.exceptions.NotFoundException;
+import klmnkki.exceptionHandling.exceptions.PersonNotFoundException;
 import klmnkki.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,12 +25,6 @@ public class PersonController {
         return ResponseEntity.ok(gson.toJson(persons));
     }
 
-//    @PostMapping("")
-//    public ResponseEntity<?> addPersonList(@RequestBody List<Person> personList) {
-//        personService.addPersonList(personList);
-//        return ResponseEntity.ok("");
-//    }
-
     @PostMapping()
     public ResponseEntity<?> addPerson(@RequestBody Person person) {
         personService.addPerson(person);
@@ -42,8 +35,39 @@ public class PersonController {
     public ResponseEntity<?> getPersonById(@PathVariable Integer id) throws ApiException {
         try {
             return ResponseEntity.ok(gson.toJson(personService.getPersonById(id)));
-        } catch (NotFoundException e) {
+        } catch (PersonNotFoundException e) {
             throw new ApiException(ApiErrorType.PERSON_NOT_FOUND, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePersonById(@PathVariable Integer id) throws ApiException {
+        try {
+            personService.deletePerson(id);
+        } catch (PersonNotFoundException e) {
+            throw new ApiException(ApiErrorType.PERSON_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/{id}/balance/{balance}")
+    public ResponseEntity<?> setPersonBalanceById(@PathVariable Integer id, @PathVariable Integer balance) throws ApiException {
+        try {
+            personService.setBalanceById(id, balance);
+        } catch (PersonNotFoundException e) {
+            throw new ApiException(ApiErrorType.PERSON_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/{id}/schedules")
+    public ResponseEntity<?> getPersonSchedulesById(@PathVariable Integer id) throws ApiException {
+        try {
+            return ResponseEntity.ok(gson.toJson(personService.getSchedulesById(id)));
+        } catch (PersonNotFoundException e) {
+            throw new ApiException(ApiErrorType.PERSON_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

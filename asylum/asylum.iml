@@ -12,6 +12,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="AsylumDB" value="4b37f3f5-aec4-427d-b4ed-805a01a9faf6" />
+          <factory-entry name="asylum" />
           <factory-entry name="entityManagerFactory" value="4b37f3f5-aec4-427d-b4ed-805a01a9faf6" />
         </datasource-mapping>
         <naming-strategy-map />

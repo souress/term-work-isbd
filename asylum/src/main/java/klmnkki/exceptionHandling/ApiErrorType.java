@@ -7,5 +7,24 @@ public enum ApiErrorType {
     PERSON_NOT_FOUND,
     USER_ALREADY_EXISTS,
     INCORRECT_LOGIN_LENGTH,
-    WRONG_PASSWORD
+    WRONG_PASSWORD,
+
+    // medicine
+    MEDICINE_NOT_FOUND,
+    SUPPLIER_NOT_FOUND,
+
+    // concert
+    LABEL_NOT_FOUND,
+    ARTIST_NOT_FOUND,
+    SCHEDULE_NOT_FOUND,
+    TOO_LOW_PERSON_BALANCE,
+
+    // room
+    ROOM_NOT_FOUND,
+
+    LOG_NOT_FOUND,
+
+    //diet
+    PRODUCT_NOT_FOUND,
+    TREATMENT_NOT_FOUND
 }

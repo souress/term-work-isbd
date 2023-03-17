@@ -32,6 +32,9 @@ public class PersonEntity {
     private Integer balance;
 
     @ManyToMany
+    @JoinTable(name = "personal_schedule",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "schedule_id"))
     private List<ScheduleEntity> schedules;
 
     public PersonEntity(String fullName, PersonRole role, Integer balance, List<ScheduleEntity> schedules) {

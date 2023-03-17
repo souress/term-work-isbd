@@ -3,7 +3,7 @@ package klmnkki.services;
 import klmnkki.POJO.Person;
 import klmnkki.entities.PersonEntity;
 import klmnkki.entities.ScheduleEntity;
-import klmnkki.exceptionHandling.exceptions.NotFoundException;
+import klmnkki.exceptionHandling.exceptions.PersonNotFoundException;
 import klmnkki.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,20 +33,24 @@ public class PersonService {
         return personList;
     }
 
-    public PersonEntity getPersonById(Integer id) throws NotFoundException {
+    public PersonEntity getPersonById(Integer id) throws PersonNotFoundException {
         var entity = personRepository.findById(id);
-        return entity.orElseThrow(NotFoundException::new);
+        return entity.orElseThrow(PersonNotFoundException::new);
     }
 
     public PersonEntity getPersonIdByName(String name) {
         return personRepository.findByFullName(name);
     }
 
-    public void deletePerson(Integer id) {
-        personRepository.deleteById(id);
+    public void deletePerson(Integer id) throws PersonNotFoundException {
+        if (personRepository.existsById(id)) {
+            personRepository.deleteById(id);
+        } else {
+            throw new PersonNotFoundException();
+        }
     }
 
-    public void setBalanceById(Integer id, Integer balance) throws NotFoundException {
+    public void setBalanceById(Integer id, Integer balance) throws PersonNotFoundException {
         var personEntity = getPersonById(id);
         personEntity.setBalance(balance);
         personRepository.save(personEntity);
@@ -56,9 +60,7 @@ public class PersonService {
         personRepository.save(Person.convertToEntity(person));
     }
 
-    public Collection<ScheduleEntity> getSchedulesById(Integer id) throws NotFoundException {
+    public Collection<ScheduleEntity> getSchedulesById(Integer id) throws PersonNotFoundException {
         return getPersonById(id).getSchedules();
     }
-
-
 }
