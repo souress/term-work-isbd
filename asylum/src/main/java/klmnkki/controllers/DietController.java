@@ -94,7 +94,7 @@ public class DietController {
     }
 
     @PostMapping("/treatment/{treatmentId}/diagnosis")
-    public ResponseEntity<?> makeDiet(@PathVariable Integer treatmentId, @RequestBody String diagnosis) throws ApiException {
+    public ResponseEntity<?> setDiagnosis(@PathVariable Integer treatmentId, @RequestBody String diagnosis) throws ApiException {
         try {
             dietService.setDiagnosis(treatmentId, diagnosis);
         } catch (TreatmentProgramNotFoundException e) {

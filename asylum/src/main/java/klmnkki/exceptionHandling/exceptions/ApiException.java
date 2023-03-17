@@ -9,18 +9,16 @@ public class ApiException extends Exception {
 
     public ApiErrorModel errorModel;
 
-    public ApiException(String message, HttpStatus status, ApiErrorModel model)
-    {
+    public ApiException(String message, HttpStatus status, ApiErrorModel model) {
         super(message != null ? message : "");
         statusCode = status;
         errorModel = model;
-        if (message != null && !message.isEmpty() && errorModel != null)
-        {
+        if (message != null && !message.isEmpty() && errorModel != null) {
             errorModel.details.put("exceptionMessage", message);
         }
     }
 
-    public ApiException(String message, ApiErrorType errorType, HttpStatus statusCode){
+    public ApiException(String message, ApiErrorType errorType, HttpStatus statusCode) {
         this(message, statusCode, new ApiErrorModel(errorType));
     }
 

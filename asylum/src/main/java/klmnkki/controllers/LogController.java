@@ -6,7 +6,6 @@ import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.ApiException;
 import klmnkki.exceptionHandling.exceptions.LogNotFoundException;
 import klmnkki.services.LogService;
-import klmnkki.services.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/logs")
 public class LogController {
     private final Gson gson = new Gson();
-    
+
     @Autowired
     private LogService logService;
 

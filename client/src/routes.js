@@ -27,13 +27,15 @@ export const publicRoutes = [{
     path: LOGIN_ROUTE, Component: AuthPage
 }, {
     path: REG_ROUTE, Component: RegPage
-}, {
+}
+, {
     path: CONTACTS_ROUTE, Component: ContactPage
 }, {
     path: CAB_ROUTE, Component: CabPage
 }, {
     path: SCHEDULE_ROUTE, Component: SchedulePage
-}]
+}
+]
 
 export const doctorRoutes = [{
     path: LOGIN_ROUTE, Component: AuthPage

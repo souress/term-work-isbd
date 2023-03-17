@@ -2,6 +2,7 @@ package klmnkki.exceptionHandling;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashMap;
 
 public class ApiErrorModel {

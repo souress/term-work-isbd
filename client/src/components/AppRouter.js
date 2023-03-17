@@ -13,8 +13,10 @@ const AppRouter = observer(() => {
 
     if (user.isAuth) {
         checkAdmin(user.user.login).then((response) => {
-            isAdmin = response;
-            user.setIsAdmin(response)
+            if (typeof response == "boolean"){
+                isAdmin = response;
+                user.setIsAdmin(response)
+            }
         })
     }
 

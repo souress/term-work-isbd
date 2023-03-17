@@ -1,11 +1,11 @@
 package klmnkki.services;
 
-import klmnkki.POJO.TreatmentProgram;
 import klmnkki.POJO.Product;
-import klmnkki.entities.TreatmentProgramEntity;
+import klmnkki.POJO.TreatmentProgram;
 import klmnkki.entities.ProductEntity;
-import klmnkki.exceptionHandling.exceptions.TreatmentProgramNotFoundException;
+import klmnkki.entities.TreatmentProgramEntity;
 import klmnkki.exceptionHandling.exceptions.ProductNotFoundException;
+import klmnkki.exceptionHandling.exceptions.TreatmentProgramNotFoundException;
 import klmnkki.repositories.ProductRepository;
 import klmnkki.repositories.TreatmentProgramRepository;
 import org.springframework.beans.factory.annotation.Autowired;

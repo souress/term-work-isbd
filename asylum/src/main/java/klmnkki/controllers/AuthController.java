@@ -3,7 +3,7 @@ package klmnkki.controllers;
 import klmnkki.POJO.AuthRequest;
 import klmnkki.POJO.User;
 import klmnkki.entities.enums.UserRole;
-import klmnkki.exceptionHandling.*;
+import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.*;
 import klmnkki.security.JwtUtils;
 import klmnkki.services.AuthService;

@@ -6,8 +6,6 @@ import klmnkki.entities.enums.RoomType;
 import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.ApiException;
 import klmnkki.exceptionHandling.exceptions.RoomNotFoundException;
-import klmnkki.exceptionHandling.exceptions.RoomNotFoundException;
-import klmnkki.services.RoomService;
 import klmnkki.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

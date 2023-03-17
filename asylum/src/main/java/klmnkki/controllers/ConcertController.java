@@ -64,7 +64,7 @@ public class ConcertController {
     }
 
     @PostMapping("/labels/{labelId}/artist")
-    public ResponseEntity<?> addArtistToLabelById(@PathVariable Integer labelId, @RequestBody Artist artist) throws ApiException {
+    public ResponseEntity<?> addArtistToLabel(@PathVariable Integer labelId, @RequestBody Artist artist) throws ApiException {
         try {
             labelArtistService.addArtistToLabel(labelId, artist);
             return ResponseEntity.ok("");
@@ -174,7 +174,7 @@ public class ConcertController {
     }
 
     @PostMapping("/schedules/{scheduleId}/room/{roomId}")
-    public ResponseEntity<?> addRoomToSchedule(@PathVariable Integer scheduleId, @PathVariable Integer roomId) throws ApiException {
+    public ResponseEntity<?> addRoomToScheduleById(@PathVariable Integer scheduleId, @PathVariable Integer roomId) throws ApiException {
         try {
             labelArtistService.setScheduleRoomById(scheduleId, roomId);
             return ResponseEntity.ok("");

@@ -22,6 +22,7 @@ const AuthPage = observer(() => {
             history.push(CAB_ROUTE)
         })
         checkRole(user.user.login).then((response) => {
+            console.log(response)
             user.setRole(response)
             history.push(CAB_ROUTE)
         })
