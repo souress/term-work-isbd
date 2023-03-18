@@ -1,13 +1,12 @@
 package klmnkki.services;
 
 import klmnkki.POJO.AuthRequest;
+import klmnkki.POJO.Person;
 import klmnkki.POJO.User;
 import klmnkki.entities.UserEntity;
 import klmnkki.entities.enums.UserRole;
-import klmnkki.exceptionHandling.exceptions.IncorrectCredentialsException;
-import klmnkki.exceptionHandling.exceptions.UserAlreadyExistsException;
-import klmnkki.exceptionHandling.exceptions.UserNotFoundException;
-import klmnkki.exceptionHandling.exceptions.WrongPasswordException;
+import klmnkki.exceptionHandling.exceptions.*;
+import klmnkki.repositories.PersonRepository;
 import klmnkki.repositories.UserRepository;
 import klmnkki.security.Hasher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +16,9 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
 
     public void register(AuthRequest authRequest) throws UserAlreadyExistsException, IncorrectCredentialsException {
         if (userRepository.existsByLogin(authRequest.getLogin())) {
@@ -64,5 +66,24 @@ public class AuthService {
         }
         var userEntity = new UserEntity(user.getLogin(), Hasher.encryptMD5(user.getPassword()), user.getRole());
         userRepository.save(userEntity);
+    }
+
+    public void setPersonForUser(Integer personId, String login) throws UserNotFoundException, PersonNotFoundException {
+        if (!userRepository.existsByLogin(login)) {
+            throw new UserNotFoundException("Wrong login.");
+        }
+        var person = personRepository.findById(personId).orElseThrow(PersonNotFoundException::new);
+        var user = userRepository.findByLogin(login);
+        user.setPerson(person);
+        userRepository.save(user);
+    }
+
+    public Person getPersonForUser(String login) throws UserNotFoundException, PersonNotFoundException {
+        if (!userRepository.existsByLogin(login)) {
+            throw new UserNotFoundException("Wrong login.");
+        }
+        var personEntity = userRepository.findByLogin(login).getPerson();
+        if (personEntity == null) throw new PersonNotFoundException();
+        return Person.convertToPerson(personEntity);
     }
 }

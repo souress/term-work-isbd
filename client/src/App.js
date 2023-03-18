@@ -3,12 +3,13 @@ import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import NavBar from "./components/NavBar";
 import FooterBar from "./components/FooterBar";
-import {check} from "./http/userAPI";
+import {check, getPersonForUser} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
 import {Context} from "./index";
 
 const App = () => {
     const {user} = useContext(Context)
+    const {person} = useContext(Context)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {

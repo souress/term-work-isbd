@@ -48,3 +48,12 @@ export const getRoles = async () => {
 export const addUser = async (user) => {
     await axios.post('/api/auth/users', user)
 }
+
+export const setPersonForUser = async (login, personId) => {
+    await axios.post('/api/auth/user/' + login + '/setPerson/' + personId)
+}
+
+export const getPersonForUser = async (login) => {
+    const {data} = await axios.get('/api/auth/user/' + login + '/person')
+    return data
+}

@@ -1,30 +1,38 @@
 import React, {useContext, useState} from 'react';
 import {Button, Card, Container, Form} from "react-bootstrap";
-import {CAB_ROUTE, REG_ROUTE} from "../utils/const";
+import {CAB_ROUTE, CONTACTS_ROUTE, REG_ROUTE} from "../utils/const";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {useHistory} from "react-router-dom";
-import {checkAdmin, checkRole, loginFunc} from "../http/userAPI";
+import {checkAdmin, checkRole, getPersonForUser, loginFunc} from "../http/userAPI";
 
 const AuthPage = observer(() => {
     const {user} = useContext(Context)
+    const {person} = useContext(Context)
     const history = useHistory()
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
     const click = async () => {
         await loginFunc(login, password);
+        getPersonForUser(login)
+            .then(data => {
+                person.setFullName(data.fullName)
+                person.setBalance(data.balance)
+                person.setRole(data.role)
+                person.setSchedule(data.schedules)
+            })
         const user1 = {login: login, password: password}
         user.setUser(user1)
         user.setIsAuth(true)
         checkAdmin(user.user.login).then((response) => {
             user.setIsAdmin(response)
-            history.push(CAB_ROUTE)
+            history.push(CONTACTS_ROUTE)
         })
         checkRole(user.user.login).then((response) => {
             console.log(response)
             user.setRole(response)
-            history.push(CAB_ROUTE)
+            history.push(CONTACTS_ROUTE)
         })
     }
 

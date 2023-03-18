@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Switch, Route, Redirect} from "react-router-dom";
-import {adminRoutes, doctorRoutes, moderatorRoutes, publicRoutes} from "../routes";
+import {adminRoutes, doctorRoutes, moderatorRoutes, patientRoutes, publicRoutes} from "../routes";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import {LOGIN_ROUTE} from "../utils/const";
@@ -35,7 +35,11 @@ const AppRouter = observer(() => {
                     <Route key={path} path={path} component={Component} exact/>)
             }
             {
-                role.valueOf() === 'MODERATOR' && moderatorRoutes.map(({path, Component}) =>
+                role.valueOf() === 'CONCERT_MODERATOR' && moderatorRoutes.map(({path, Component}) =>
+                    <Route key={path} path={path} component={Component} exact/>)
+            }
+            {
+                role.valueOf() === 'PATIENT' && patientRoutes.map(({path, Component}) =>
                     <Route key={path} path={path} component={Component} exact/>)
             }
             <Redirect to={LOGIN_ROUTE}/>

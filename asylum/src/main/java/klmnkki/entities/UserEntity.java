@@ -26,6 +26,10 @@ public class UserEntity {
     @Column(name = "role")
     private UserRole role;
 
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private PersonEntity person;
+
     public UserEntity(String login, String password, UserRole role) {
         this.login = login;
         this.password = password;

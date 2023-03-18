@@ -1,9 +1,9 @@
 import React, {useContext} from 'react';
-import {Card, Col, Row} from "react-bootstrap";
+import {Button, Card, Col, Row} from "react-bootstrap";
 import {Context} from "../index";
 
 const CabPage = () => {
-    
+    const {person} = useContext(Context)
 
     return (<Row className="g-0">
         <Row>
@@ -11,11 +11,11 @@ const CabPage = () => {
         </Row>
         <Row>
                 <Card style={{marginLeft: 10}}>
-                    <Card>Name</Card>
-                    <Card>Balance</Card>
+                    <Card>Name: {person.fullName}</Card>
+                    <Card>Balance: {person.balance}</Card>
                     <Card>Treatment program</Card>
                     <Card>Diet</Card>
-                    <Card>Schedule</Card>
+                    <Card>Schedule: {person.schedules}</Card>
                 </Card>
         </Row>
     </Row>);

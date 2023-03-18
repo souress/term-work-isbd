@@ -1,6 +1,8 @@
 package klmnkki.controllers;
 
+import com.google.gson.Gson;
 import klmnkki.POJO.AuthRequest;
+import klmnkki.POJO.Person;
 import klmnkki.POJO.User;
 import klmnkki.entities.enums.UserRole;
 import klmnkki.exceptionHandling.ApiErrorType;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    private final Gson gson = new Gson();
+
     @Autowired
     private AuthService authService;
     @Autowired
@@ -94,6 +98,29 @@ public class AuthController {
             throw new ApiException(ApiErrorType.INCORRECT_LOGIN_LENGTH, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             throw new ApiException("An error occurred on the server", ApiErrorType.UNKNOWN_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/user/{login}/setPerson/{personId}")
+    public ResponseEntity<?> setPersonForUser(@PathVariable String login, @PathVariable Integer personId) throws ApiException {
+        try {
+            authService.setPersonForUser(personId, login);
+        } catch (UserNotFoundException e) {
+            throw new ApiException(ApiErrorType.USER_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        } catch (PersonNotFoundException e) {
+            throw new ApiException(ApiErrorType.PERSON_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/user/{login}/person")
+    public ResponseEntity<?> getPersonForUser(@PathVariable String login) throws ApiException {
+        try {
+            return ResponseEntity.ok(gson.toJson(authService.getPersonForUser(login)));
+        } catch (UserNotFoundException e) {
+            throw new ApiException(ApiErrorType.USER_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        } catch (PersonNotFoundException e) {
+            throw new ApiException(ApiErrorType.PERSON_NOT_FOUND, HttpStatus.BAD_REQUEST);
         }
     }
 }
