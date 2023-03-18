@@ -4,13 +4,12 @@ import {
     ADMIN_ROUTE,
     CONTACTS_ROUTE,
     CAB_ROUTE,
-    LOGIN_ROUTE, SCHEDULE_ROUTE, DOCTOR_ROUTE
+    LOGIN_ROUTE, SCHEDULE_ROUTE, DOCTOR_ROUTE, MODERATOR_ROUTE
 } from "../utils/const";
 import {NavLink, useHistory} from "react-router-dom";
 import NavbarImg from "../assets/i.webp"
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
-import toBoolean from "validator/es/lib/toBoolean";
 
 const NavBar = observer(() => {
     const {user} = useContext(Context)
@@ -40,16 +39,14 @@ const NavBar = observer(() => {
                     }}>
                         Личный кабинет
                     </Button>
+                        <Button variant="secondary" style={{marginRight: 10}} onClick={() => {
+                            history.push(SCHEDULE_ROUTE)
+                        }}>
+                            Расписание
+                        </Button>
                 </NavItem>
                 }
-                <NavItem>
-                    <Button variant="secondary" style={{marginRight: 10}} onClick={() => {
-                        history.push(SCHEDULE_ROUTE)
-                    }}>
-                        Расписание
-                    </Button>
-                </NavItem>
-                {toBoolean(user.isAdmin) &&
+                {(user.isAdmin === "true") &&
                     <NavItem>
                         <Button variant="secondary" onClick={() => {
                             history.push(ADMIN_ROUTE)
@@ -63,20 +60,38 @@ const NavBar = observer(() => {
                         <Button variant="secondary" onClick={() => {
                             history.push(DOCTOR_ROUTE)
                         }}>
-                            Действия
+                            Действия врача
+                        </Button>
+                    </NavItem>
+                }
+                {user.role.valueOf() === 'CONCERT_MODERATOR' &&
+                    <NavItem>
+                        <Button variant="secondary" onClick={() => {
+                            history.push(MODERATOR_ROUTE)
+                        }}>
+                            Модерация
                         </Button>
                     </NavItem>
                 }
             </Nav>
         }
         <Nav className="flex-column me-3">
-            {!user.isAuth && <div>
-                <Button variant="secondary" onClick={() => {
-                    history.push(LOGIN_ROUTE)
-                }} style={{width: 80}}>Вход</Button>
-            </div>}
+            {!user.isAuth && <Nav className="justify-content-center me-auto" style={{marginLeft: 15}}>
+
+                <NavItem>
+                    <Button variant="secondary" onClick={() => {
+                        history.push(LOGIN_ROUTE)
+                    }} style={{width: 80, background: "green", marginRight: 10}}>Вход</Button>
+                    <Button variant="secondary" style={{marginRight: 10}} onClick={() => {
+                        history.push(CONTACTS_ROUTE)
+                    }}>
+                        Контакты
+                    </Button>
+                </NavItem>
+            </Nav>
+            }
             {user.isAuth && <div>
-                <Button variant="secondary" style={{marginLeft: 10}} onClick={() => {
+                <Button variant="secondary" style={{marginLeft: 10, background: "red"}} onClick={() => {
                     logout()
                     history.push(LOGIN_ROUTE)
                 }}>Выход</Button>
