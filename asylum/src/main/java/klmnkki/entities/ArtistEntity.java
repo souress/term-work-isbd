@@ -22,7 +22,7 @@ public class ArtistEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "label_id", nullable = false)
-    private LabelEntity label;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "label_id")
+    private LabelEntity labelEntity;
 }

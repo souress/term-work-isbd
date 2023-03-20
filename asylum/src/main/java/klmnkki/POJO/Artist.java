@@ -1,6 +1,7 @@
 package klmnkki.POJO;
 
 import klmnkki.entities.ArtistEntity;
+import klmnkki.entities.LabelEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +14,8 @@ import lombok.Setter;
 public class Artist {
     private Integer id;
     private String name;
-    private Label label;
 
-    public Artist(String name, Label label) {
-        this.name = name;
-        this.label = label;
-    }
+    private Label label;
 
     public static ArtistEntity convertToEntity(Artist artist) {
         return new ArtistEntity(
@@ -28,9 +25,10 @@ public class Artist {
     }
 
     public static Artist convertToArtist(ArtistEntity artistEntity) {
+
         return new Artist(
                 artistEntity.getId(),
                 artistEntity.getName(),
-                Label.convertToLabel(artistEntity.getLabel()));
+                Label.convertToLabel(artistEntity.getLabelEntity()));
     }
 }

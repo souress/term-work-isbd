@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "react-widgets": "^5.8.4",
     "validator": "^13.9.0"
   }
 }

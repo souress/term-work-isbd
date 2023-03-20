@@ -27,16 +27,24 @@ public class Label {
     }
 
     public static LabelEntity convertToEntity(Label label) {
+        if (label == null) {
+            return null;
+        }
+        var artists = label.getArtists();
         return new LabelEntity(
                 label.getId(),
                 label.getName(),
-                label.getArtists().stream().map(Artist::convertToEntity).collect(Collectors.toSet()));
+                artists == null ? null : artists.stream().map(Artist::convertToEntity).collect(Collectors.toSet()));
     }
 
     public static Label convertToLabel(LabelEntity labelEntity) {
+        if (labelEntity == null) {
+            return null;
+        }
+        var artists = labelEntity.getArtists();
         return new Label(
                 labelEntity.getId(),
                 labelEntity.getName(),
-                labelEntity.getArtists().stream().map(Artist::convertToArtist).collect(Collectors.toSet()));
+                artists == null ? null : artists.stream().map(Artist::convertToArtist).collect(Collectors.toSet()));
     }
 }

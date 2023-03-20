@@ -58,12 +58,16 @@ public class LabelArtistService {
         }
     }
 
-    public void addArtist(Artist artist) {
-        artistRepository.save(Artist.convertToEntity(artist));
-    }
-
-    public void addArtistList(List<Artist> artistList) {
-        artistList.stream().map(Artist::convertToEntity).forEach(artistRepository::save);
+    public void addArtist(Artist artist) throws LabelNotFoundException {
+        LabelEntity labelEntity;
+        if (artist.getLabel() == null) {
+            labelEntity = null;
+        } else {
+            labelEntity = labelRepository.findByName(artist.getLabel().getName()).orElseThrow(LabelNotFoundException::new);
+        }
+        var artistEntity = Artist.convertToEntity(artist);
+        artistEntity.setLabelEntity(labelEntity);
+        artistRepository.save(artistEntity);
     }
 
     public List<Artist> getAllArtists() {
@@ -90,17 +94,16 @@ public class LabelArtistService {
         var label = labelRepository.findById(labelId).orElseThrow(LabelNotFoundException::new);
         var artist = artistRepository.findById(artistId).orElseThrow(ArtistNotFoundException::new);
         label.getArtists().add(artist);
-        artist.setLabel(label);
         labelRepository.save(label);
         artistRepository.save(artist);
     }
 
     public void addArtistToLabel(Integer labelId, Artist artist) throws ArtistNotFoundException, LabelNotFoundException {
-        var label = labelRepository.findById(labelId).orElseThrow(LabelNotFoundException::new);
+        var labelEntity = labelRepository.findById(labelId).orElseThrow(LabelNotFoundException::new);
         var artistEntity = artistRepository.save(Artist.convertToEntity(artist));
-        label.getArtists().add(artistEntity);
-        artistEntity.setLabel(label);
-        labelRepository.save(label);
+        artistEntity.setLabelEntity(labelEntity);
+        labelEntity.getArtists().add(artistEntity);
+        labelRepository.save(labelEntity);
         artistRepository.save(artistEntity);
     }
 

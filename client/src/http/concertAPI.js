@@ -61,8 +61,6 @@ export const addArtist = async (artist) => {
     await axios.post('/api/concert/artists', artist)
         .then((response) => {
             return response.data
-        }).catch((error) => {
-            console.log(error)
         })
 }
 

@@ -90,8 +90,12 @@ public class ConcertController {
     }
 
     @PostMapping("/artists")
-    public ResponseEntity<?> addArtist(@RequestBody Artist artist) {
-        labelArtistService.addArtist(artist);
+    public ResponseEntity<?> addArtist(@RequestBody Artist artist) throws ApiException {
+        try {
+            labelArtistService.addArtist(artist);
+        } catch (LabelNotFoundException e) {
+            throw new ApiException(ApiErrorType.LABEL_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok("");
     }
 

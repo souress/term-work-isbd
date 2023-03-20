@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "med_storage", schema = "public")
+@Table(name = "label", schema = "public")
 public class LabelEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "label_id_seq")
@@ -23,6 +23,6 @@ public class LabelEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "label")
+    @OneToMany
     private Set<ArtistEntity> artists;
 }
