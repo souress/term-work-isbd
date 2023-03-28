@@ -12,8 +12,7 @@ import klmnkki.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class LabelArtistService {
@@ -31,6 +30,10 @@ public class LabelArtistService {
     private RoomRepository roomRepository;
 
     public void addLabel(Label label) {
+        labelRepository.save(Label.convertToEntity(label));
+    }
+
+    public void updateLabel(Label label) {
         labelRepository.save(Label.convertToEntity(label));
     }
 
@@ -70,10 +73,18 @@ public class LabelArtistService {
         artistRepository.save(artistEntity);
     }
 
+    public void updateArtist(Artist artist) {
+        var artistEntity = Artist.convertToEntity(artist);
+        artistRepository.save(artistEntity);
+    }
+
     public List<Artist> getAllArtists() {
         var artistEntities = artistRepository.findAll();
         var artistList = new ArrayList<Artist>();
-        artistEntities.stream().map(Artist::convertToArtist).forEach(artistList::add);
+        artistEntities
+                .stream()
+                .map(Artist::convertToArtist)
+                .forEach(artistList::add);
         return artistList;
     }
 
@@ -107,7 +118,7 @@ public class LabelArtistService {
         artistRepository.save(artistEntity);
     }
 
-    public void addSchedule(Schedule schedule) {
+    public void addOrUpdateSchedule(Schedule schedule) {
         scheduleRepository.save(Schedule.convertToEntity(schedule));
     }
 
@@ -123,6 +134,10 @@ public class LabelArtistService {
         return entity.orElseThrow(ScheduleNotFoundException::new);
     }
 
+    public List<ScheduleEntity> getSchedulesByIds(Collection<Integer> id) {
+        return scheduleRepository.findAllById(id);
+    }
+
     public void deleteSchedule(Integer id) throws ScheduleNotFoundException {
         if (scheduleRepository.existsById(id)) {
             scheduleRepository.deleteById(id);
@@ -134,7 +149,6 @@ public class LabelArtistService {
     public void addPersonToSchedule(Integer personId, Integer scheduleId) throws ScheduleNotFoundException, PersonNotFoundException {
         var schedule = getScheduleById(scheduleId);
         var person = personService.getPersonById(personId);
-        schedule.getPersons().add(person);
         person.getSchedules().add(schedule);
         scheduleRepository.save(schedule);
         personRepository.save(person);
@@ -143,7 +157,6 @@ public class LabelArtistService {
     public void removePersonFromSchedule(Integer personId, Integer scheduleId) throws ScheduleNotFoundException, PersonNotFoundException {
         var schedule = getScheduleById(scheduleId);
         var person = personService.getPersonById(personId);
-        schedule.getPersons().remove(person);
         person.getSchedules().remove(schedule);
         scheduleRepository.save(schedule);
         personRepository.save(person);

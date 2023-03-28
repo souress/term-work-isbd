@@ -21,7 +21,7 @@ public class DietService {
     @Autowired
     private TreatmentProgramRepository treatmentProgramRepository;
 
-    public void addProduct(Product product) {
+    public void addOrUpdateProduct(Product product) {
         productRepository.save(Product.convertToEntity(product));
     }
 
@@ -58,7 +58,7 @@ public class DietService {
         treatmentProgramRepository.save(treatment);
     }
 
-    public void addTreatmentProgram(TreatmentProgram treatment) {
+    public void addOrUpdateTreatmentProgram(TreatmentProgram treatment) {
         treatmentProgramRepository.save(TreatmentProgram.convertToEntity(treatment));
     }
 

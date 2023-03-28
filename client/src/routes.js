@@ -35,10 +35,6 @@ export const publicRoutes = [{
     path: REG_ROUTE, Component: RegPage
 }, {
     path: CONTACTS_ROUTE, Component: ContactPage
-}, {
-    path: CAB_ROUTE, Component: CabPage
-}, {
-    path: SCHEDULE_ROUTE, Component: SchedulePage
 }
 ]
 

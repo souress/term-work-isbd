@@ -31,6 +31,12 @@ public class PersonController {
         return ResponseEntity.ok("");
     }
 
+    @PostMapping("/update")
+    public ResponseEntity<?> updatePerson(@RequestBody Person person) {
+        personService.updatePerson(person);
+        return ResponseEntity.ok("");
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getPersonById(@PathVariable Integer id) throws ApiException {
         try {

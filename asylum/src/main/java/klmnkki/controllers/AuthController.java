@@ -101,6 +101,18 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/users/update")
+    public ResponseEntity<?> updateUser(@RequestBody User user) throws ApiException {
+        try {
+            authService.updateUser(user);
+            return ResponseEntity.ok("");
+        } catch (IncorrectCredentialsException e) {
+            throw new ApiException(ApiErrorType.INCORRECT_LOGIN_LENGTH, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            throw new ApiException("An error occurred on the server", ApiErrorType.UNKNOWN_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/user/{login}/setPerson/{personId}")
     public ResponseEntity<?> setPersonForUser(@PathVariable String login, @PathVariable Integer personId) throws ApiException {
         try {

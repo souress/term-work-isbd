@@ -68,6 +68,14 @@ public class AuthService {
         userRepository.save(userEntity);
     }
 
+    public void updateUser(User user) throws IncorrectCredentialsException {
+        if (user.getLogin().length() < 5 || user.getLogin().length() > 15) {
+            throw new IncorrectCredentialsException("Login length is invalid.");
+        }
+        var userEntity = new UserEntity(user.getId(), user.getLogin(), Hasher.encryptMD5(user.getPassword()), user.getRole());
+        userRepository.save(userEntity);
+    }
+
     public void setPersonForUser(Integer personId, String login) throws UserNotFoundException, PersonNotFoundException {
         if (!userRepository.existsByLogin(login)) {
             throw new UserNotFoundException("Wrong login.");

@@ -4,26 +4,39 @@ import {Button, Form} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import DropdownList from "react-widgets/DropdownList";
 import "react-widgets/styles.css";
-import {addArtist, getAllLabels} from "../../http/concertAPI";
-import {Checkbox} from "@nextui-org/react";
+import {addArtist, getAllArtists, getAllLabels} from "../../http/concertAPI";
+import {Checkbox, Container} from "@nextui-org/react";
 
 const EditArtist = observer(({show, onHide}) => {
     const [name, setName] = useState('')
+    const [newName, setNewName] = useState('')
     const [label, setLabel] = useState('')
     const [labels, setLabels] = useState([])
+    const [artists, setArtists] = useState([])
+    const [artist, setArtist] = useState('')
     const [submitDisabled, setSubmitDisabled] = useState(false)
     const [checkbox, setCheckbox] = useState(false)
+    const [updateArtist, setUpdateArtist] = useState(false)
 
     const fetchLabels = () => {
         getAllLabels().then((r) => {
-            console.log(r)
             setLabels(r.map(x => x.name))
+        })
+    }
+
+    const fetchArtists = () => {
+        getAllArtists().then((r) => {
+            setArtists(r.map(x => {
+                return `${x.name} #${x.id}`
+            }))
         })
     }
 
     const validate = (property, value) => {
         switch (property) {
             case 'name':
+                return value.trim().length !== 0 && value !== ''
+            case 'newName':
                 return value.trim().length !== 0 && value !== ''
             case 'label':
                 return labels.includes(value)
@@ -32,30 +45,37 @@ const EditArtist = observer(({show, onHide}) => {
         }
     }
 
-    const validateForm = () => {
+    const validateForm = (update) => {
         let valid = true
-        if (!validate('name', name)){
-            document.getElementById("name_err_msg").innerHTML +=
-                "<br/>Имя артиста не может быть пустым"
-            valid = false
-        }
-        if (!validate('label', label) && checkbox){
-            document.getElementById("label_err_msg").innerHTML +=
-                "<br/>Выберите значение из списка!"
-            valid = false
+        if (update) {
+            if (!validate('newName', newName)) {
+                document.getElementById("newName_err_msg").innerHTML +=
+                    "<br/>Имя артиста не может быть пустым"
+                valid = false
+            }
+        } else {
+            if (!validate('name', name)) {
+                document.getElementById("name_err_msg").innerHTML +=
+                    "<br/>Имя артиста не может быть пустым"
+                valid = false
+            }
+            if (!validate('label', label) && checkbox) {
+                document.getElementById("label_err_msg").innerHTML +=
+                    "<br/>Выберите значение из списка!"
+                valid = false
+            }
         }
         return valid
     }
 
-    const click = () => {
-        let validationResult = validateForm()
+    const click = (update) => {
+        let validationResult = validateForm(update)
         setSubmitDisabled(validationResult)
         if (validationResult) {
             if (checkbox) {
                 let labelObj = {label}
                 let artist = {name, labelObj}
                 addArtist(artist).then((r) => {
-                    console.log(r)
                     document.getElementById("artist_msg").textContent = "Артист добавлен"
                 }).catch(error => {
                     console.log(error)
@@ -83,60 +103,115 @@ const EditArtist = observer(({show, onHide}) => {
 
     return (
         <Modal show={show} onHide={onHide} centered>
-            <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Артисты
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group className="mb-1">
-                        <Form.Label className="d-flex">Имя артиста</Form.Label>
-                        <Form.Control
-                            value={name}
-                            onChange={e => {
-                                setName(e.target.value)
-                                setSubmitDisabled(false)
-                            }}
-                            className="mt-3"
-                            placeholder="Введите имя артиста"
-                        />
-                    </Form.Group>
-                    <div style={{color: "red", fontSize: 15}} id="name_err_msg"></div>
-                    <hr/>
-                    {checkbox &&
-                        <Form.Group className="mb-1">
-                            <Form.Label className="d-flex">Лэйбл</Form.Label>
-                            <DropdownList
-                                value={label}
-                                onChange={(nextValue) => {
-                                    clearErrors()
-                                    setLabel(nextValue)
-                                    setSubmitDisabled(false)
-                                }}
-                                onClick={fetchLabels}
-                                data={labels}
-                                placeholder={"Выберите название лэйбла"}
-                            />
-                        </Form.Group>
-                    }
-                    <div style={{color: "red", fontSize: 15}} id="label_err_msg"></div>
-                    <Checkbox className={"d-flex"} size={"sm"} isSelected={checkbox} onChange={setCheckbox}
-                              onClick={() => {
-                                  clearErrors()
-                              }}>приписать к лэйблу</Checkbox>
+            {!updateArtist &&
+                <Container>
+                    <Modal.Header>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Добавить артиста
+                        </Modal.Title>
+                        <Button variant={"outline-info"} onClick={() => setUpdateArtist(true)}>Переключить режим</Button>
+                    </Modal.Header>
+                        <Modal.Body>
+                            <Form>
+                                <Form.Group className="mb-1">
+                                    <Form.Label className="d-flex">Имя артиста</Form.Label>
+                                    <Form.Control
+                                        value={name}
+                                        onChange={e => {
+                                            setName(e.target.value)
+                                            setSubmitDisabled(false)
+                                        }}
+                                        className="mt-3"
+                                        placeholder="Введите имя артиста"
+                                    />
+                                </Form.Group>
+                                <div style={{color: "red", fontSize: 15}} id="name_err_msg"></div>
+                                <hr/>
+                                {checkbox &&
+                                    <Form.Group className="mb-1">
+                                        <Form.Label className="d-flex">Лэйбл</Form.Label>
+                                        <DropdownList
+                                            value={label}
+                                            onChange={(nextValue) => {
+                                                clearErrors()
+                                                setLabel(nextValue)
+                                                setSubmitDisabled(false)
+                                            }}
+                                            onClick={fetchLabels}
+                                            data={labels}
+                                            placeholder={"Выберите лэйбл"}
+                                        />
+                                    </Form.Group>
+                                }
+                                <div style={{color: "red", fontSize: 15}} id="label_err_msg"></div>
+                                <Checkbox className={"d-flex"} size={"sm"} isSelected={checkbox} onChange={setCheckbox}
+                                          onClick={() => {
+                                              clearErrors()
+                                          }}>приписать к лэйблу</Checkbox>
 
-                    <div style={{color: "red", fontSize: 15}} id="artist_msg"></div>
-                    <div style={{color: "red", fontSize: 15}} id="artist_err_msg"></div>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-                <Button disabled={submitDisabled} variant="outline-success" onClick={() => {
-                    clearErrors();
-                    click()
-                }}>Добавить</Button>
-            </Modal.Footer>
+                                <div style={{color: "red", fontSize: 15}} id="artist_msg"></div>
+                                <div style={{color: "red", fontSize: 15}} id="artist_err_msg"></div>
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
+                            <Button disabled={submitDisabled} variant="outline-success" onClick={() => {
+                                clearErrors();
+                                click(false)
+                            }}>Добавить</Button>
+                        </Modal.Footer>
+                    </Container>
+                    }
+            {updateArtist &&
+                <Container>
+                    <Modal.Header>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Изменить артиста
+                        </Modal.Title>
+                        <Button variant={"outline-info"} onClick={() => setUpdateArtist(false)}>Переключить режим</Button>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className="mb-1">
+                                <Form.Label className="d-flex">Артист</Form.Label>
+                                <DropdownList
+                                    value={artist}
+                                    onChange={(nextValue) => {
+                                        setArtist(nextValue)
+                                        setSubmitDisabled(false)
+                                    }}
+                                    onClick={fetchArtists}
+                                    data={artists}
+                                    placeholder={"Выберите артиста"}
+                                />
+                            </Form.Group>
+                            <hr/>
+                            <Form.Group className="mb-1">
+                                <Form.Label className="d-flex">Имя артиста</Form.Label>
+                                <Form.Control
+                                    value={newName}
+                                    onChange={e => {
+                                        setNewName(e.target.value)
+                                        setSubmitDisabled(false)
+                                    }}
+                                    className="mt-3"
+                                    placeholder="Введите новое имя артиста"
+                                />
+                            </Form.Group>
+                            <div style={{color: "red", fontSize: 15}} id="label_err_msg"></div>
+                            <div style={{color: "red", fontSize: 15}} id="artist_msg"></div>
+                            <div style={{color: "red", fontSize: 15}} id="artist_err_msg"></div>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
+                        <Button disabled={submitDisabled} variant="outline-success" onClick={() => {
+                            click(true)
+                        }}>Добавить</Button>
+                    </Modal.Footer>
+                </Container>
+            }
         </Modal>
     );
 });

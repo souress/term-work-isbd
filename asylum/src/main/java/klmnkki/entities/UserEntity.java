@@ -1,6 +1,7 @@
 package klmnkki.entities;
 
 import klmnkki.entities.enums.UserRole;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
 @Table(name = "user", schema = "public")
 public class UserEntity {
     @Id
@@ -31,6 +33,13 @@ public class UserEntity {
     private PersonEntity person;
 
     public UserEntity(String login, String password, UserRole role) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
+    }
+
+    public UserEntity(Integer id, String login, String password, UserRole role) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.role = role;

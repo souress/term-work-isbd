@@ -36,7 +36,13 @@ public class RoomController {
 
     @PostMapping("")
     public ResponseEntity<?> addRoom(@RequestBody Room room) {
-        roomService.addRoom(room);
+        roomService.addOrUpdateRoom(room);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateRoom(@RequestBody Room room) {
+        roomService.addOrUpdateRoom(room);
         return ResponseEntity.ok("");
     }
 
@@ -58,5 +64,10 @@ public class RoomController {
             throw new ApiException(ApiErrorType.ROOM_NOT_FOUND, HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<?> getRoomTypes() {
+        return ResponseEntity.ok(gson.toJson(roomService.getRoomTypes()));
     }
 }

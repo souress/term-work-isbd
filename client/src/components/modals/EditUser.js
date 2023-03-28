@@ -151,6 +151,20 @@ const EditUser = observer(({show, onHide}) => {
                         />
                     </Form.Group>
                     <div style={{color: "red", fontSize: 15}} id="role_err_msg"></div>
+                    <hr/>
+                    <Form.Group className="mb-1">
+                        <Form.Label className="d-flex">Человек</Form.Label>
+                        <Form.Control
+                            value={role}
+                            className="mt-3"
+                            onChange={e => {
+                                setRole(e.target.value)
+                                setSubmitDisabled(false)
+                            }}
+                            placeholder="Введите роль"
+                        />
+                    </Form.Group>
+                    <div style={{color: "red", fontSize: 15}} id="role_err_msg"></div>
                     <div style={{color: "red", fontSize: 15}} id="reg_err_msg"></div>
                     <div style={{color: "green", fontSize: 15}} id="reg_msg"></div>
                 </Form>

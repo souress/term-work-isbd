@@ -8,8 +8,7 @@ import klmnkki.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RoomService {
@@ -17,7 +16,7 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
-    public void addRoom(Room room) {
+    public void addOrUpdateRoom(Room room) {
         roomRepository.save(Room.convertToEntity(room));
     }
 
@@ -25,10 +24,13 @@ public class RoomService {
         roomList.stream().map(Room::convertToEntity).forEach(roomRepository::save);
     }
 
-    public List<Room> getAllRooms() {
+    public ArrayList<Room> getAllRooms() {
         var roomEntities = roomRepository.findAll();
         var roomList = new ArrayList<Room>();
-        roomEntities.stream().map(Room::convertToRoom).forEach(roomList::add);
+        roomEntities
+                .stream()
+                .map(Room::convertToRoom)
+                .forEach(roomList::add);
         return roomList;
     }
 
@@ -49,5 +51,9 @@ public class RoomService {
         var room = roomRepository.findById(id).orElseThrow(RoomNotFoundException::new);
         room.setRoomType(type);
         roomRepository.save(room);
+    }
+
+    public RoomType[] getRoomTypes() {
+        return RoomType.values();
     }
 }

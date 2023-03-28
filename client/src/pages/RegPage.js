@@ -29,9 +29,7 @@ const RegPage = observer(() => {
             errorMessage.textContent = "Необходимо подтвердить согласие с политикой обработки персональных данных"
         } else {
             await registerFunc(login, password)
-            user.setUser({login: login, password: password})
-            user.setIsAuth(true)
-            history.push(CAB_ROUTE)
+            history.push(LOGIN_ROUTE)
         }
     }
     return (<Container className="d-flex justify-content-center align-items-center" style={{height: window.innerHeight - 200}}>

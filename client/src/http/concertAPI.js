@@ -83,6 +83,11 @@ export const getScheduleById = async (id) => {
     return data
 }
 
+export const getSchedulesByIds = async (ids) => {
+    const {data} = await axios.post('/api/concert/schedules/byIds', ids)
+    return data
+}
+
 export const addSchedule = async (schedule) => {
     await axios.post('/api/concert/schedules', schedule)
         .then((response) => {

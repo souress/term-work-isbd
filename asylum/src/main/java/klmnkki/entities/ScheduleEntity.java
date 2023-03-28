@@ -37,7 +37,4 @@ public class ScheduleEntity {
 
     @Column(name = "duration", columnDefinition = "INT NOT NULL CHECK ('duration' >= 0)")
     private Integer duration;
-
-    @ManyToMany(mappedBy = "schedules")
-    private List<PersonEntity> persons;
 }

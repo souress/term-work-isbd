@@ -3,10 +3,12 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import "./css/admPanel.css"
 import EditUser from "../components/modals/EditUser";
 import EditArtist from "../components/modals/EditArtist";
+import EditRoom from "../components/modals/EditRoom";
 
 const AdminPanel = () => {
     const [userVisible, setUserVisible] = useState(false)
     const [artistVisible, setArtistVisible] = useState(false)
+    const [roomVisible, setRoomVisible] = useState(false)
 
     return (<Container className="d-flex justify-content-center align-items-center">
             <Row>
@@ -33,9 +35,10 @@ const AdminPanel = () => {
                     </Col>
                     <Col>
                         <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
-                                onClick={() => console.log("true")} style={{width: 500}}>
-                            Комнаты
+                                onClick={() => setRoomVisible(true)} style={{width: 500}}>
+                            Помещения
                         </Button>
+                        <EditRoom show={roomVisible} onHide={() => setRoomVisible(false)}/>
                     </Col>
                     <Col>
                         <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"

@@ -15,13 +15,7 @@ const AuthPage = observer(() => {
 
     const click = async () => {
         await loginFunc(login, password);
-        getPersonForUser(login)
-            .then(data => {
-                person.setFullName(data.fullName)
-                person.setBalance(data.balance)
-                person.setRole(data.role)
-                person.setSchedule(data.schedules)
-            })
+        person.updatePerson(login)
         const user1 = {login: login, password: password}
         user.setUser(user1)
         user.setIsAuth(true)

@@ -1,32 +1,30 @@
 import React, {useState} from 'react';
-import {Button, Col, Container, Row} from "react-bootstrap";
+import {Button, Container} from "@nextui-org/react";
 import "./css/admPanel.css"
+import EditArtist from "../components/modals/EditArtist";
+import EditLabel from "../components/modals/EditLabel";
+import EditSchedule from "../components/modals/EditSchedule";
 
 const ModeratorPanel = () => {
+    const [artistVisible, setArtistVisible] = useState(false)
+    const [labelVisible, setLabelVisible] = useState(false)
+    const [scheduleVisible, setScheduleVisible] = useState(false)
 
-    return (<Container className="d-flex flex-column">
-            <Row>
-                <Col style={{paddingLeft: 100}}>
-                    <Col>
-                        <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
-                                onClick={() => console.log("true")} style={{width: 500}}>
-                            Артисты
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
-                                onClick={() => console.log("true")} style={{width: 500}}>
-                            Лейблы
-                        </Button>
-                    </Col>
-                    <Col>
-                        <Button id="adm_button" type={"button"} variant="secondary" className="mt-4 p-2"
-                                onClick={() => console.log("true")} style={{width: 500}}>
-                            Расписание
-                        </Button>
-                    </Col>
-                </Col>
-            </Row>
+    return (<Container className="d-flex  justify-content-center">
+            <EditArtist show={artistVisible} onHide={() => setArtistVisible(false)}/>
+            <EditLabel show={labelVisible} onHide={() => setLabelVisible(false)}/>
+            <EditSchedule show={scheduleVisible} onHide={() => setScheduleVisible(false)}/>
+            <Button.Group size="xl" className={"align-self-center"} vertical={true} color={"secondary"} flat>
+                <Button type={"button"} onClick={() => setArtistVisible(true)} style={{width: 500}}>
+                    Артисты
+                </Button>
+                <Button type={"button"} onClick={() => setLabelVisible(true)} style={{width: 500}}>
+                    Лейблы
+                </Button>
+                <Button  type={"button"} onClick={() => setScheduleVisible(true)} style={{width: 500}}>
+                    Расписание
+                </Button>
+            </Button.Group>
         </Container>
     );
 };

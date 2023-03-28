@@ -36,3 +36,8 @@ export const setRoomType = async (id, roomType) => {
             console.log(error)
         })
 }
+
+export const getRoomTypes = async () => {
+    const {data} = await axios.get('/api/rooms/types')
+    return data
+}

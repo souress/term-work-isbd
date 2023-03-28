@@ -37,7 +37,13 @@ public class DietController {
 
     @PostMapping("/products")
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
-        dietService.addProduct(product);
+        dietService.addOrUpdateProduct(product);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/products/update")
+    public ResponseEntity<?> updateProduct(@RequestBody Product product) {
+        dietService.addOrUpdateProduct(product);
         return ResponseEntity.ok("");
     }
 
@@ -79,7 +85,13 @@ public class DietController {
 
     @PostMapping("/treatment")
     public ResponseEntity<?> addTreatmentProgram(@RequestBody TreatmentProgram treatment) {
-        dietService.addTreatmentProgram(treatment);
+        dietService.addOrUpdateTreatmentProgram(treatment);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/treatment/update")
+    public ResponseEntity<?> updateTreatmentProgram(@RequestBody TreatmentProgram treatment) {
+        dietService.addOrUpdateTreatmentProgram(treatment);
         return ResponseEntity.ok("");
     }
 

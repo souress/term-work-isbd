@@ -29,7 +29,13 @@ public class MedController {
 
     @PostMapping("/medicines")
     public ResponseEntity<?> addMedicine(@RequestBody Medicine medicine) {
-        medService.addMedicine(medicine);
+        medService.addOrUpdateMedicine(medicine);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/medicines/update")
+    public ResponseEntity<?> updateMedicine(@RequestBody Medicine medicine) {
+        medService.addOrUpdateMedicine(medicine);
         return ResponseEntity.ok("");
     }
 
@@ -87,7 +93,13 @@ public class MedController {
 
     @PostMapping("/suppliers")
     public ResponseEntity<?> addSupplier(@RequestBody Supplier supplier) {
-        medService.addSupplier(supplier);
+        medService.addOrUpdateSupplier(supplier);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/suppliers/update")
+    public ResponseEntity<?> updateSupplier(@RequestBody Supplier supplier) {
+        medService.addOrUpdateSupplier(supplier);
         return ResponseEntity.ok("");
     }
 

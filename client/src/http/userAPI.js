@@ -49,6 +49,10 @@ export const addUser = async (user) => {
     await axios.post('/api/auth/users', user)
 }
 
+export const updateUser = async (user) => {
+    await axios.post('/api/auth/users', user)
+}
+
 export const setPersonForUser = async (login, personId) => {
     await axios.post('/api/auth/user/' + login + '/setPerson/' + personId)
 }

@@ -8,10 +8,15 @@ import klmnkki.POJO.Schedule;
 import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.*;
 import klmnkki.services.LabelArtistService;
+import klmnkki.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 @RestController
 @RequestMapping("/api/concert")
@@ -20,6 +25,9 @@ public class ConcertController {
 
     @Autowired
     private LabelArtistService labelArtistService;
+
+    @Autowired
+    private RoomService roomService;
 
     @GetMapping("/labels")
     public ResponseEntity<?> getAllLabels() {
@@ -38,6 +46,12 @@ public class ConcertController {
     @PostMapping("/labels")
     public ResponseEntity<?> addLabel(@RequestBody Label label) {
         labelArtistService.addLabel(label);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/labels/update")
+    public ResponseEntity<?> updateLabel(@RequestBody Label label) {
+        labelArtistService.updateLabel(label);
         return ResponseEntity.ok("");
     }
 
@@ -99,6 +113,12 @@ public class ConcertController {
         return ResponseEntity.ok("");
     }
 
+    @PostMapping("/artists/update")
+    public ResponseEntity<?> updateArtist(@RequestBody Artist artist) throws ApiException {
+        labelArtistService.updateArtist(artist);
+        return ResponseEntity.ok("");
+    }
+
     @DeleteMapping("/artists/{id}")
     public ResponseEntity<?> deleteArtistById(@PathVariable Integer id) throws ApiException {
         try {
@@ -123,9 +143,53 @@ public class ConcertController {
         }
     }
 
+    @PostMapping("/schedules/byIds")
+    public ResponseEntity<?> getSchedulesByIds(@RequestBody Collection<Integer> id) {
+        return ResponseEntity.ok(gson.toJson(labelArtistService.getSchedulesByIds(id)));
+    }
+
     @PostMapping("/schedules")
-    public ResponseEntity<?> addSchedule(@RequestBody Schedule schedule) {
-        labelArtistService.addSchedule(schedule);
+    public ResponseEntity<?> addSchedule(@RequestBody Object scheduleObj) throws ApiException {
+        var scheduleMap = (LinkedHashMap) scheduleObj;
+        var dateTimeArr = String.valueOf(scheduleMap.get("begin")).split("T");
+        var timestamp = String.format("%s %s:00", dateTimeArr[0], dateTimeArr[1]);
+        try {
+            var schedule = new Schedule(
+                    Artist.convertToArtist(labelArtistService.getArtistById(Integer.parseInt(String.valueOf(scheduleMap.get("artist"))))),
+                    Room.convertToRoom(roomService.getRoomById(Integer.parseInt(String.valueOf(scheduleMap.get("place"))))),
+                    Integer.parseInt(String.valueOf(scheduleMap.get("price"))),
+                    Timestamp.valueOf(timestamp),
+                    Integer.parseInt(String.valueOf(scheduleMap.get("duration")))
+            );
+            labelArtistService.addOrUpdateSchedule(schedule);
+        } catch (ArtistNotFoundException e) {
+            throw new ApiException(ApiErrorType.ARTIST_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        } catch (RoomNotFoundException e) {
+            throw new ApiException(ApiErrorType.ROOM_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/schedules/update")
+    public ResponseEntity<?> updateSchedule(@RequestBody Object scheduleObj) throws ApiException {
+        var scheduleMap = (LinkedHashMap) scheduleObj;
+        var dateTimeArr = String.valueOf(scheduleMap.get("begin")).split("T");
+        var timestamp = String.format("%s %s:00", dateTimeArr[0], dateTimeArr[1]);
+        try {
+            var schedule = new Schedule(
+                    Integer.parseInt(String.valueOf(scheduleMap.get("id"))),
+                    Artist.convertToArtist(labelArtistService.getArtistById(Integer.parseInt(String.valueOf(scheduleMap.get("artist"))))),
+                    Room.convertToRoom(roomService.getRoomById(Integer.parseInt(String.valueOf(scheduleMap.get("place"))))),
+                    Integer.parseInt(String.valueOf(scheduleMap.get("price"))),
+                    Timestamp.valueOf(timestamp),
+                    Integer.parseInt(String.valueOf(scheduleMap.get("duration")))
+            );
+            labelArtistService.addOrUpdateSchedule(schedule);
+        } catch (ArtistNotFoundException e) {
+            throw new ApiException(ApiErrorType.ARTIST_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        } catch (RoomNotFoundException e) {
+            throw new ApiException(ApiErrorType.ROOM_NOT_FOUND, HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok("");
     }
 

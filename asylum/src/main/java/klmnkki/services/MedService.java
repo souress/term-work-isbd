@@ -24,7 +24,7 @@ public class MedService {
     @Autowired
     private SupplierRepository supplierRepository;
 
-    public void addMedicine(Medicine medicine) {
+    public void addOrUpdateMedicine(Medicine medicine) {
         medicineRepository.save(Medicine.convertToEntity(medicine));
     }
 
@@ -51,7 +51,7 @@ public class MedService {
         }
     }
 
-    public void addSupplier(Supplier supplier) {
+    public void addOrUpdateSupplier(Supplier supplier) {
         supplierRepository.save(Supplier.convertToEntity(supplier));
     }
 
