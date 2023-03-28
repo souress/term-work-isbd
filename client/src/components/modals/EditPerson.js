@@ -73,13 +73,11 @@ const EditPerson = observer(({show, onHide}) => {
         setSubmitDisabled(validationResult)
         if (validationResult) {
             if (update) {
-
                 let arr = person.split('#')
                 let id = arr[arr.length-1]
-                let artistReq = {id: id, name: newName}
-                let pe = {id: id, fullName: name, role, balance}
+                let pe = {id: id, fullName: newName, role, balance}
                 updatePerson(pe).then(() => {
-                    document.getElementById("person_msg").textContent = "Человек добавлен"
+                    document.getElementById("person_msg").textContent = "Человек изменен"
                 }).catch(error => {
                     console.log(error)
                     document.getElementById("person_err_msg").textContent = error.response.data.errorCode
@@ -98,6 +96,7 @@ const EditPerson = observer(({show, onHide}) => {
     const clearErrors = (update = false) => {
         if (update) {
             document.getElementById("new_name_err_msg").innerHTML = ''
+            document.getElementById("balance_err_msg").innerHTML = ''
         } else {
             document.getElementById("name_err_msg").innerHTML = ''
             document.getElementById("balance_err_msg").innerHTML = ''
@@ -211,14 +210,13 @@ const EditPerson = observer(({show, onHide}) => {
                                 />
                             </Form.Group>
                             <div style={{color: "red", fontSize: 15}} id="new_name_err_msg"></div>
-
                             <hr/>
                             <Form.Group className="mb-1">
                                 <Form.Label className="d-flex">Роль</Form.Label>
                                 <DropdownList
                                     value={role}
                                     onChange={(nextValue) => {
-                                        clearErrors()
+                                        clearErrors(true)
                                         setRole(nextValue)
                                         setSubmitDisabled(false)
                                     }}

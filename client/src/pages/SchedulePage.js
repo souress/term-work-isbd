@@ -34,12 +34,16 @@ const SchedulePage = () => {
         fetchSchedules()
     }, []);
 
-    const callBuyTicket = (scheduleId) => {
-        person.schedule.push(scheduleId)
-        buyTicket(scheduleId, person.id).then((r) => {
-            console.log(r)
-        })
-        fetchSchedules()
+    const callBuyTicket = (scheduleId, price) => {
+        if (person.balance >= price) {
+            person.schedule.push(scheduleId)
+            buyTicket(scheduleId, person.id).then((r) => {
+                console.log(r)
+            })
+            fetchSchedules()
+        } else  {
+            alert("Not enough money")
+        }
     }
 
     return (<Row className="g-0">
@@ -69,7 +73,7 @@ const SchedulePage = () => {
                                         return <Table.Cell>{item[columnKey]}</Table.Cell>
                                     } else if (!person.schedule.includes(item.id)) {
                                         return <Table.Cell>
-                                            <Button onPress={() => callBuyTicket(item.id)}>
+                                            <Button onPress={() => callBuyTicket(item.id, item.price)}>
                                                 Купить
                                             </Button>
                                         </Table.Cell>
