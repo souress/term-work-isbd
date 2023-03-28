@@ -64,6 +64,13 @@ export const addArtist = async (artist) => {
         })
 }
 
+export const updateArtist = async (artist) => {
+    await axios.post('/api/concert/artists/update', artist)
+        .then((response) => {
+            return response.data
+        })
+}
+
 export const deleteArtistById = async (id) => {
     await axios.delete('/api/concert/artists/' + id)
         .then((response) => {

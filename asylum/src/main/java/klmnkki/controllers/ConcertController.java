@@ -1,6 +1,7 @@
 package klmnkki.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import klmnkki.POJO.Artist;
 import klmnkki.POJO.Label;
 import klmnkki.POJO.Room;
@@ -150,7 +151,7 @@ public class ConcertController {
 
     @PostMapping("/schedules")
     public ResponseEntity<?> addSchedule(@RequestBody Object scheduleObj) throws ApiException {
-        var scheduleMap = (LinkedHashMap) scheduleObj;
+        var scheduleMap = (LinkedTreeMap) scheduleObj;
         var dateTimeArr = String.valueOf(scheduleMap.get("begin")).split("T");
         var timestamp = String.format("%s %s:00", dateTimeArr[0], dateTimeArr[1]);
         try {
@@ -172,7 +173,7 @@ public class ConcertController {
 
     @PostMapping("/schedules/update")
     public ResponseEntity<?> updateSchedule(@RequestBody Object scheduleObj) throws ApiException {
-        var scheduleMap = (LinkedHashMap) scheduleObj;
+        var scheduleMap = (LinkedTreeMap) scheduleObj;
         var dateTimeArr = String.valueOf(scheduleMap.get("begin")).split("T");
         var timestamp = String.format("%s %s:00", dateTimeArr[0], dateTimeArr[1]);
         try {

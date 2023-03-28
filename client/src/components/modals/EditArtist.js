@@ -4,7 +4,7 @@ import {Button, Form} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import DropdownList from "react-widgets/DropdownList";
 import "react-widgets/styles.css";
-import {addArtist, getAllArtists, getAllLabels} from "../../http/concertAPI";
+import {addArtist, getAllArtists, getAllLabels, updateArtist} from "../../http/concertAPI";
 import {Checkbox, Container} from "@nextui-org/react";
 
 const EditArtist = observer(({show, onHide}) => {
@@ -16,7 +16,7 @@ const EditArtist = observer(({show, onHide}) => {
     const [artist, setArtist] = useState('')
     const [submitDisabled, setSubmitDisabled] = useState(false)
     const [checkbox, setCheckbox] = useState(false)
-    const [updateArtist, setUpdateArtist] = useState(false)
+    const [isUpdateArtist, setIsUpdateArtist] = useState(false)
 
     const fetchLabels = () => {
         getAllLabels().then((r) => {
@@ -49,7 +49,7 @@ const EditArtist = observer(({show, onHide}) => {
         let valid = true
         if (update) {
             if (!validate('newName', newName)) {
-                document.getElementById("newName_err_msg").innerHTML +=
+                document.getElementById("new_name_err_msg").innerHTML +=
                     "<br/>Имя артиста не может быть пустым"
                 valid = false
             }
@@ -72,44 +72,59 @@ const EditArtist = observer(({show, onHide}) => {
         let validationResult = validateForm(update)
         setSubmitDisabled(validationResult)
         if (validationResult) {
-            if (checkbox) {
-                let labelObj = {label}
-                let artist = {name, labelObj}
-                addArtist(artist).then((r) => {
+            if (update) {
+                let arr = artist.split('#')
+                let id = arr[arr.length-1]
+                let artistReq = {id: id, name: newName}
+                updateArtist(artistReq).then(() => {
                     document.getElementById("artist_msg").textContent = "Артист добавлен"
                 }).catch(error => {
                     console.log(error)
                     document.getElementById("artist_err_msg").textContent = error.response.data.errorCode
                 })
             } else {
-                let artist = {name}
-                addArtist(artist).then(() => {
-                    document.getElementById("artist_msg").textContent = "Артист добавлен"
-                }).catch(error => {
-                    console.log(error)
-                    document.getElementById("artist_err_msg").textContent = error.response.data.errorCode
-                })
+                if (checkbox) {
+                    let labelObj = {label}
+                    let artist = {name, labelObj}
+                    addArtist(artist).then((r) => {
+                        document.getElementById("artist_msg").textContent = "Артист добавлен"
+                    }).catch(error => {
+                        console.log(error)
+                        document.getElementById("artist_err_msg").textContent = error.response.data.errorCode
+                    })
+                } else {
+                    let artist = {name}
+                    addArtist(artist).then(() => {
+                        document.getElementById("artist_msg").textContent = "Артист добавлен"
+                    }).catch(error => {
+                        console.log(error)
+                        document.getElementById("artist_err_msg").textContent = error.response.data.errorCode
+                    })
+                }
             }
         }
     }
 
-    const clearErrors = () => {
-        document.getElementById("name_err_msg").innerHTML = ''
-        document.getElementById("label_err_msg").innerHTML = ''
+    const clearErrors = (update = false) => {
+        if (update) {
+            document.getElementById("new_name_err_msg").innerHTML = ''
+        } else {
+            document.getElementById("name_err_msg").innerHTML = ''
+            document.getElementById("label_err_msg").innerHTML = ''
+        }
         document.getElementById("artist_msg").textContent = ''
         document.getElementById("artist_err_msg").textContent = ''
-
     }
 
     return (
         <Modal show={show} onHide={onHide} centered>
-            {!updateArtist &&
+            {!isUpdateArtist &&
                 <Container>
                     <Modal.Header>
                         <Modal.Title id="contained-modal-title-vcenter">
                             Добавить артиста
                         </Modal.Title>
-                        <Button variant={"outline-info"} onClick={() => setUpdateArtist(true)}>Переключить режим</Button>
+                        <Button variant={"outline-info"} onClick={() => setIsUpdateArtist(true)}>Переключить режим</Button>
                     </Modal.Header>
                         <Modal.Body>
                             <Form>
@@ -162,13 +177,13 @@ const EditArtist = observer(({show, onHide}) => {
                         </Modal.Footer>
                     </Container>
                     }
-            {updateArtist &&
+            {isUpdateArtist &&
                 <Container>
                     <Modal.Header>
                         <Modal.Title id="contained-modal-title-vcenter">
                             Изменить артиста
                         </Modal.Title>
-                        <Button variant={"outline-info"} onClick={() => setUpdateArtist(false)}>Переключить режим</Button>
+                        <Button variant={"outline-info"} onClick={() => setIsUpdateArtist(false)}>Переключить режим</Button>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -178,6 +193,7 @@ const EditArtist = observer(({show, onHide}) => {
                                 <DropdownList
                                     value={artist}
                                     onChange={(nextValue) => {
+                                        clearErrors(true)
                                         setArtist(nextValue)
                                         setSubmitDisabled(false)
                                     }}
@@ -199,7 +215,7 @@ const EditArtist = observer(({show, onHide}) => {
                                     placeholder="Введите новое имя артиста"
                                 />
                             </Form.Group>
-                            <div style={{color: "red", fontSize: 15}} id="label_err_msg"></div>
+                            <div style={{color: "red", fontSize: 15}} id="new_name_err_msg"></div>
                             <div style={{color: "red", fontSize: 15}} id="artist_msg"></div>
                             <div style={{color: "red", fontSize: 15}} id="artist_err_msg"></div>
                         </Form>
@@ -207,6 +223,7 @@ const EditArtist = observer(({show, onHide}) => {
                     <Modal.Footer>
                         <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
                         <Button disabled={submitDisabled} variant="outline-success" onClick={() => {
+                            clearErrors(true)
                             click(true)
                         }}>Добавить</Button>
                     </Modal.Footer>

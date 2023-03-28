@@ -12,6 +12,11 @@ import klmnkki.security.Hasher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class AuthService {
     @Autowired
@@ -72,8 +77,20 @@ public class AuthService {
         if (user.getLogin().length() < 5 || user.getLogin().length() > 15) {
             throw new IncorrectCredentialsException("Login length is invalid.");
         }
-        var userEntity = new UserEntity(user.getId(), user.getLogin(), Hasher.encryptMD5(user.getPassword()), user.getRole());
+        var userEntity = new UserEntity(
+                user.getId(),
+                user.getLogin(),
+                Hasher.encryptMD5(user.getPassword()),
+                user.getRole(),
+                Person.convertToEntity(user.getPerson())
+        );
         userRepository.save(userEntity);
+    }
+
+    public List<AbstractMap.SimpleEntry<Integer, String>> getAllUsers() {
+        var users = userRepository.findAll();
+        var response = new ArrayList<Map.Entry<Integer, String>>();
+        return users.stream().map(x -> new AbstractMap.SimpleEntry<>(x.getId(), x.getLogin())).toList();
     }
 
     public void setPersonForUser(Integer personId, String login) throws UserNotFoundException, PersonNotFoundException {

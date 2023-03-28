@@ -50,7 +50,7 @@ export const addUser = async (user) => {
 }
 
 export const updateUser = async (user) => {
-    await axios.post('/api/auth/users', user)
+    await axios.post('/api/auth/users/update', user)
 }
 
 export const setPersonForUser = async (login, personId) => {
@@ -59,5 +59,10 @@ export const setPersonForUser = async (login, personId) => {
 
 export const getPersonForUser = async (login) => {
     const {data} = await axios.get('/api/auth/user/' + login + '/person')
+    return data
+}
+
+export const getAllUsers = async () => {
+    const {data} = await axios.get('/api/auth/users')
     return data
 }

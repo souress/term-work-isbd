@@ -1,6 +1,7 @@
 package klmnkki.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import klmnkki.POJO.*;
 import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.*;
@@ -42,7 +43,7 @@ public class LogController {
 
     @PostMapping("")
     public ResponseEntity<?> addLog(@RequestBody Object logObj) throws ApiException {
-        var logMap = (LinkedHashMap) logObj;
+        var logMap = (LinkedTreeMap) logObj;
         var dateTimeArrBegin = String.valueOf(logMap.get("begin")).split("T");
         var dateTimeArrEnd = String.valueOf(logMap.get("end")).split("T");
         var timestampBegin = String.format("%s %s:00", dateTimeArrBegin[0], dateTimeArrBegin[1]);

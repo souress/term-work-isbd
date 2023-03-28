@@ -22,6 +22,12 @@ public class Person {
     private Integer balance;
     private List<ScheduleEntity> schedules;
 
+    public Person(String fullName, PersonRole role, Integer balance) {
+        this.fullName = fullName;
+        this.role = role;
+        this.balance = balance;
+    }
+
     public Person(String fullName, PersonRole role, Integer balance, List<ScheduleEntity> schedules) {
         this.fullName = fullName;
         this.role = role;

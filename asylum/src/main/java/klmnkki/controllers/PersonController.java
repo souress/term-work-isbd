@@ -2,6 +2,7 @@ package klmnkki.controllers;
 
 import com.google.gson.Gson;
 import klmnkki.POJO.Person;
+import klmnkki.entities.enums.PersonRole;
 import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.ApiException;
 import klmnkki.exceptionHandling.exceptions.PersonNotFoundException;
@@ -75,5 +76,9 @@ public class PersonController {
         }
     }
 
+    @GetMapping("/roles")
+    public ResponseEntity<?> getRoles() {
+        return ResponseEntity.ok(PersonRole.values());
+    }
 
 }

@@ -1,6 +1,9 @@
 package klmnkki.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.internal.LinkedTreeMap;
 import klmnkki.POJO.AuthRequest;
 import klmnkki.POJO.Person;
 import klmnkki.POJO.User;
@@ -9,10 +12,14 @@ import klmnkki.exceptionHandling.ApiErrorType;
 import klmnkki.exceptionHandling.exceptions.*;
 import klmnkki.security.JwtUtils;
 import klmnkki.services.AuthService;
+import klmnkki.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,6 +28,8 @@ public class AuthController {
 
     @Autowired
     private AuthService authService;
+    @Autowired
+    private PersonService personService;
     @Autowired
     JwtUtils jwtUtils;
 
@@ -101,9 +110,25 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        var list = authService.getAllUsers();
+        var ret = list.stream().map(x -> String.format("{\"id\": %d, \"login\": \"%s\"}", x.getKey(), x.getValue())).toList();
+        var newRet = ret.stream().map(x -> gson.fromJson(x, JsonObject.class)).toList();
+        return ResponseEntity.ok(newRet);
+    }
+
     @PostMapping("/users/update")
-    public ResponseEntity<?> updateUser(@RequestBody User user) throws ApiException {
+    public ResponseEntity<?> updateUser(@RequestBody Object userObj) throws ApiException {
         try {
+            var userMap = (LinkedTreeMap) userObj;
+            var user = new User(
+                    Integer.parseInt(String.valueOf(userMap.get("id"))),
+                    String.valueOf(userMap.get("login")),
+                    String.valueOf(userMap.get("password")),
+                    UserRole.valueOf(String.valueOf(userMap.get("role"))),
+                    Person.convertToPerson(personService.getPersonById(Integer.parseInt(String.valueOf(userMap.get("person")))))
+            );
             authService.updateUser(user);
             return ResponseEntity.ok("");
         } catch (IncorrectCredentialsException e) {

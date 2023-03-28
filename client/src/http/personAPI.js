@@ -44,3 +44,17 @@ export const getPersonSchedulesById = async (id) => {
             console.log(error)
         })
 }
+
+export const getPersonRoles = async () => {
+    const {data} = await axios.get('/api/persons/roles')
+    return data
+}
+
+export const updatePerson = async (person) => {
+    await axios.post('/api/persons/update', person)
+        .then((response) => {
+            return response.data
+        }).catch((error) => {
+            console.log(error)
+        })
+}
